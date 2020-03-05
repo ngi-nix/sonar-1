@@ -49,6 +49,14 @@ module.exports = function apiRoutes (api) {
   // TODO: This route should have the same pattern as the others.
   islandRouter.put('/source/:key', handlers.putSource)
 
+  islandRouter.get('/source', function (req, res, next) {
+    const { island } = req
+    island.query('records', { schema: 'core/source' }, (err, records) => {
+      if (err) return next(err)
+      return records
+    })
+  })
+
   islandRouter.get('/debug', handlers.debug)
 
   islandRouter.get('/fs-info', function (req, res, next) {
@@ -68,6 +76,7 @@ module.exports = function apiRoutes (api) {
       // res.send(drives)
     })
   })
+
 
   // Load island if in path.
   router.use('/:island', function (req, res, next) {

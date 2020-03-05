@@ -229,6 +229,14 @@ module.exports = class SonarClient {
     })
   }
 
+  async getSources (key) {
+    key = key || this.island
+    return this._request({
+      method: 'GET',
+      path: [key, 'source']
+    })
+  }
+
   async readdir (path) {
     const self = this
     path = path || '/'

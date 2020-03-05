@@ -32,7 +32,11 @@ import client from '../lib/client'
 // import './Islands.css'
 
 async function loadInfo () {
-  return client.info()
+  let info = client.info()
+  info.islands.forEach(island => {
+    client.getSources(island.key).then(console.log)
+  })
+  return info
 }
 
 export default function IslandPage (props) {
