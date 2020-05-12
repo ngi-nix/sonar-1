@@ -189,3 +189,49 @@ tape('query empty island', t => {
     })
   })
 })
+
+tape.only('put and delete schema', t => {
+  const schema = {
+    properties: {
+      type: {
+        type: 'string',
+        title: 'Type'
+      },
+      key: {
+        type: 'string',
+        pattern: '^[0-9a-f]{64}$',
+        title: 'key'
+      },
+      alias: {
+        type: 'string',
+        title: 'Alias'
+      },
+      description: {
+        type: 'string',
+        title: 'Description'
+      }
+    },
+    type: 'object',
+    $id: 'core/source',
+    name: 'core/testor'
+  }
+  createStore({ network: false }, (err, islands, cleanup) => {
+    t.error(err)
+    islands.create('island', (err, island) => {
+      t.error(err)
+      island.putSchema('core/testor', schema, (err) => {
+        t.error(err, 'put test schema')
+        // TODO: test to get schema before and after
+        // Key handling!!! probably need to pass key also for delete function!!
+        // island.getSchema()
+        island.deleteSchema('core/testor', (err) => {
+          t.error(err, 'deleted schema')
+          cleanup(err => {
+            t.error(err)
+            t.end()
+          })
+        })
+      })
+    })
+  })
+})

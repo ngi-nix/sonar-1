@@ -151,6 +151,12 @@ module.exports = class Island extends Nanoresource {
     else return schema
   }
 
+  deleteSchema (name, cb) {
+    const deleted = this.db.deleteSchema(name)
+    if (cb) cb(deleted ? null : new Error('Schema with this name not found'), name)
+    else console.log('Successfully deleted schema')
+  }
+
   putSource (key, info, cb) {
     this.db.putSource(key, info, cb)
   }
