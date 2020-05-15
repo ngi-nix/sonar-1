@@ -190,46 +190,53 @@ tape('query empty island', t => {
   })
 })
 
-tape.only('put and delete schema', t => {
+tape('put and delete schema', t => {
   const schema = {
-    properties: {
-      type: {
-        type: 'string',
-        title: 'Type'
-      },
-      key: {
-        type: 'string',
-        pattern: '^[0-9a-f]{64}$',
-        title: 'key'
-      },
-      alias: {
-        type: 'string',
-        title: 'Alias'
-      },
-      description: {
-        type: 'string',
-        title: 'Description'
-      }
-    },
+    properties: {},
     type: 'object',
-    $id: 'core/source',
+    $id: 'core/testor',
     name: 'core/testor'
   }
   createStore({ network: false }, (err, islands, cleanup) => {
     t.error(err)
     islands.create('island', (err, island) => {
       t.error(err)
-      island.putSchema('core/testor', schema, (err) => {
-        t.error(err, 'put test schema')
-        // TODO: test to get schema before and after
-        // Key handling!!! probably need to pass key also for delete function!!
-        // island.getSchema()
-        island.deleteSchema('core/testor', (err) => {
-          t.error(err, 'deleted schema')
-          cleanup(err => {
+      island.getSchemas((err, schemas) => {
+        t.error(err)
+        t.false('core/testor' in schemas, 'test schema not in schemas now')
+        island.putSchema('core/testor', schema, (err) => {
+          t.error(err, 'put test schema')
+          island.getSchema('core/testor', (err, schema) => {
             t.error(err)
-            t.end()
+            t.ok(schema, 'test schema in schemas now')
+            island.deleteSchema('core/testor', (err) => {
+              t.error(err, 'delete schema')
+              island.getSchemas((err, schemas) => {
+                t.error(err)
+                t.false('core/testor' in schemas, 'test schema not in schemas anymore')
+                cleanup(err => {
+                  t.error(err)
+                  t.end()
+                })
+              })
+            })
           })
+        })
+      })
+    })
+  })
+})
+
+tape('delete non-existing schema', t => {
+  createStore({ network: false }, (err, islands, cleanup) => {
+    t.error(err)
+    islands.create('island', (err, island) => {
+      t.error(err)
+      island.deleteSchema('nonexistent', (err) => {
+        t.ok(err, 'deletion not possible')
+        cleanup(err => {
+          t.error(err)
+          t.end()
         })
       })
     })
