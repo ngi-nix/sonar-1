@@ -154,6 +154,15 @@ module.exports = class Island extends Nanoresource {
   deleteSchema (name, cb) {
     const err = this.db.deleteSchema(name)
     if (cb) cb(err)
+    // this.query('index', { schema: 'core/schema', prop: 'name', value: name }, { waitForSync: true }, (err, record) => {
+    //   if (err) cb(err)
+    //   console.log(record)
+    //   this.del(record, { waitForSync: true }, (err) => {
+    //     if (err) cb(err)
+    //     err = this.db.deleteSchema(name)
+    //     if (cb) cb(err)
+    //   })
+    // })
   }
 
   putSource (key, info, cb) {
