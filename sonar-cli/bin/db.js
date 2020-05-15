@@ -58,6 +58,11 @@ exports.builder = function (yargs) {
       describe: 'list schemas',
       handler: listSchemas
     })
+    .command({
+      command: 'delete-schema [name]',
+      describe: 'delete schema from island',
+      handler: deleteSchema
+    })
     .help()
 }
 
@@ -109,6 +114,13 @@ async function listSchemas (argv) {
   const schemas = await client.getSchemas()
   if (!schemas) return console.error('No schemas')
   console.log(Object.keys(schemas).join('\n'))
+}
+
+async function deleteSchema (argv) {
+  const client = makeClient(argv)
+  const { name } = argv
+  const result = await client.deleteSchema(name)
+  console.log(result)
 }
 
 function collectJson () {

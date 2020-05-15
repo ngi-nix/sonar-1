@@ -109,6 +109,14 @@ module.exports = class SonarClient {
     })
   }
 
+  async deleteSchema (schemaName) {
+    return this._request({
+      method: 'DELETE',
+      path: [this.island, 'schema'],
+      params: { name: schemaName }
+    })
+  }
+
   async putSource (key, info) {
     return this._request({
       method: 'PUT',

@@ -53,6 +53,8 @@ module.exports = function apiRoutes (api) {
   islandRouter.get('/schema', handlers.getSchemas)
   // Put schema
   islandRouter.post('/schema', handlers.putSchema)
+  // Delete schema
+  islandRouter.delete('/schema', handlers.deleteSchema)
   // Put source
   // TODO: This route should have the same pattern as the others.
   islandRouter.put('/source/:key', handlers.putSource)
@@ -246,6 +248,15 @@ function createIslandHandlers () {
           if (err) return next(err)
           res.send(result)
         })
+      })
+    },
+
+    deleteSchema (req, res, next) {
+      const island = req.island
+      const schemaName = req.query.name
+      island.deleteSchema(schemaName, (err) => {
+        if (err) return next(err)
+        res.send({ msg: 'schema deleted' })
       })
     },
 
