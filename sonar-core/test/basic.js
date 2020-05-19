@@ -88,7 +88,7 @@ tape('batch and query', t => {
     })
   })
 })
-tape('put and get', t => {
+tape('put, get and delete', t => {
   createStore({ network: false }, (err, islands, cleanup) => {
     t.error(err, 'tempdir ok')
     islands.create('default', (err, island) => {
@@ -99,7 +99,16 @@ tape('put and get', t => {
           t.error(err)
           t.equal(records.length, 1)
           t.equal(records[0].value.title, 'hello')
-          cleanup(() => t.end())
+          island.del({ id: id, schema: 'foo' }, (err) => {
+            t.error(err, 'deleted record')
+            island.get({ id }, { waitForSync: true }, (err, records) => {
+              t.error(err)
+              // TODO: check that record doesn't exist anymore after del is implemented
+              // console.log(records)
+              // t.equal(records.length, 0, 'record not found anymore')
+              cleanup(() => t.end())
+            })
+          })
         })
       })
     })
