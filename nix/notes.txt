@@ -1,0 +1,3 @@
+dependency hell:
+  sonar/server -> sonar/core -> sonar/plugin-search -> sonar-tantivy -> tantivy (rust)
+
