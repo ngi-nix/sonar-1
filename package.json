@@ -1,5 +1,6 @@
 {
   "name": "sonar",
+  "version": "master",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arso-project/sonar.git"
