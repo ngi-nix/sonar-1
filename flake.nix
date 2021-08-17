@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgsOld.url = "nixpkgs/nixos-unstable";
   };
 
   outputs = { nixpkgs, ... }@inp: 
@@ -37,20 +38,17 @@
           bots = (pkgs.callPackage ./nix/bots/node-packages.nix {}).package;
 
           # sonar/server -> sonar/core -> sonar/plugin-search -> sonar-tantivy -> tantivy (rust)
-          # probably we don't need to build tantivy itself.
-          # tantivy seems to be a library, not a program (this derivaiton results in no output)
-          # we just need to build sonar-tantivy which requires the source of the tantivy lib
-          # TODO: remove this derivation and instead build sonar-tantivy
-          tantivy = pkgs.rustPlatform.buildRustPackage rec {
-            pname = "tantivy";
-            version = "main";
+
+          sonar-tantivy = pkgs.rustPlatform.buildRustPackage rec {
+            pname = "sonar-tantivy";
+            version = "master";
             src = pkgs.fetchFromGitHub {
               owner = "ngi-nix";
               repo = pname;
-              rev = "63924b59c604086e688bf3b4072e24fe0b130959";
-              sha256 = "sha256-5OpeSBAIB3afjJ/rnK3Cf+LBtTfb4emQESMA1kwL7Fo=";
+              rev = "0a1a730898e4e41fb797b08e2dccff3f20bbd55b";
+              sha256 = "sha256-s6whnf8ymsoxyTKq1RED4Be0/nT9lIqj5JWsRkKKMps=";
             };
-            cargoSha256 = "sha256-xqwZ8Wcyb5+VQe5bYTb0JM0gP3uBwNo3nFdyLa4CpMA=";
+            cargoSha256 = "sha256-Jk7QC95WzEIQgBBuoD6QJwkzDASIwHoP8szBEfNBoFk=";
           };
         };
 
