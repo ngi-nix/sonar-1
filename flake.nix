@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgsOld.url = "nixpkgs/nixos-unstable";
   };
 
   outputs = { nixpkgs, ... }@inp: 
@@ -31,7 +30,7 @@
           #  - remove bots from packaage.json (otherwise node2nix crashes)
           #  - run node2nix on the modified package.json
           #  - TODO: manually build the bots package and add it back via override
-          server = (pkgs.callPackage ./nix/server/node-packages.nix {}).package;
+          server = (pkgs.callPackage ./nix/server {}).package;
 
           # bots is a dependency of server but is missing from npm repo.
           # we need to build it ourselves
