@@ -30,7 +30,16 @@
           #  - remove bots from packaage.json (otherwise node2nix crashes)
           #  - run node2nix on the modified package.json
           #  - TODO: manually build the bots package and add it back via override
-          server = (pkgs.callPackage ./nix/server {}).package;
+          server = (pkgs.callPackage ./nix/server {}).package.override (old: {
+            dependencies = lib.forEach old.dependencies (source:
+              if source.name == "_at_arso-project_slash_sonar-tantivy" then
+                source // {
+                  # TODO: build tarball with modofied install.js
+                }
+              else
+                source
+            );
+          });
 
           # bots is a dependency of server but is missing from npm repo.
           # we need to build it ourselves
@@ -38,17 +47,26 @@
 
           # sonar/server -> sonar/core -> sonar/plugin-search -> sonar-tantivy -> tantivy (rust)
 
-          sonar-tantivy = pkgs.rustPlatform.buildRustPackage rec {
-            pname = "sonar-tantivy";
-            version = "master";
-            src = pkgs.fetchFromGitHub {
-              owner = "ngi-nix";
-              repo = pname;
-              rev = "0a1a730898e4e41fb797b08e2dccff3f20bbd55b";
-              sha256 = "sha256-s6whnf8ymsoxyTKq1RED4Be0/nT9lIqj5JWsRkKKMps=";
+          sonar-tantivy-rust =
+            let 
+              srcOriginal = pkgs.fetchFromGitHub {
+                owner = "arso-project";
+                repo = "sonar-tantivy";
+                rev = "v0.2.14";
+                sha256 = "sha256-NdvoF46TQYxfbViGCOpGFDxrIL/6ChkPAK9Xs9yyoIU=";
+              };
+              src = pkgs.runCommand "sonar-tantivy-patched" {} ''
+                cp -r ${srcOriginal} $out
+                chmod +w $out
+                cp ${./nix/sonar-tantivy/Cargo.lock} $out/Cargo.lock
+              '';
+            in
+            pkgs.rustPlatform.buildRustPackage rec {
+              pname = "sonar-tantivy";
+              version = "master";
+              inherit src;
+              cargoSha256 = "sha256-BbdLzxOG71DVVW8D5RF90XBlsfTYOsldkqF58Nb3HUM=";
             };
-            cargoSha256 = "sha256-Jk7QC95WzEIQgBBuoD6QJwkzDASIwHoP8szBEfNBoFk=";
-          };
         };
 
       }
