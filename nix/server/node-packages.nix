@@ -73,14 +73,11 @@ let
         sha512 = "1D8rrQyeFR2hK7zWBDfemdGJDHZaIEUdjrCtGQYVCbXkIOgn0U+wyUyTouN4w01ZMWkD72WNP+S40oBlA8pUNQ==";
       };
     };
-    "@arsonar/ui-0.4.0" = {
+    "@arsonar/ui-../../packages/ui" = {
       name = "_at_arsonar_slash_ui";
       packageName = "@arsonar/ui";
       version = "0.4.0";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/@arsonar/ui/-/ui-0.4.0.tgz";
-        sha512 = "iC/WDvDuTuMDKBM4lCBTQ3EPeBzleij1KM3WwGI+CbUk7hiA913AOOjb+xENIJZVWlkmpWnP9sr6DxagHq4RmQ==";
-      };
+      src = ../../packages/ui;
     };
     "@corestore/networker-1.2.0" = {
       name = "_at_corestore_slash_networker";
@@ -3290,13 +3287,13 @@ let
         sha512 = "QQf67BU+cANnc/2U+wzUV20UjO5oBryWpnNyKshdLfT9BdeiXlh9wxLGmOjAuBWMYITdMs+BtJSQQNlGRNbWpA==";
       };
     };
-    "pino-http-5.6.0" = {
+    "pino-http-5.7.0" = {
       name = "pino-http";
       packageName = "pino-http";
-      version = "5.6.0";
+      version = "5.7.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/pino-http/-/pino-http-5.6.0.tgz";
-        sha512 = "sf1SsfkgsOb8UaK/DdXu9N036lxkeyOcHBMvHNbDAjfg8pFU0c6/SqrrY9OAK8VhW+Ej80KhA+rF8o8sArquxA==";
+        url = "https://registry.npmjs.org/pino-http/-/pino-http-5.7.0.tgz";
+        sha512 = "BMpj8CKP48XALGGcEzf+rvaz+gVhVRAkxk08gvGPfyoOB4zAix6WKO7k2BHiw7UAwma1eoG1z2NzkAU/+fkyhA==";
       };
     };
     "pino-pretty-4.8.0" = {
@@ -4848,7 +4845,7 @@ let
           sources."through2-4.0.2"
         ];
       })
-      sources."@arsonar/ui-0.4.0"
+      sources."@arsonar/ui-../../packages/ui"
       (sources."@corestore/networker-1.2.0" // {
         dependencies = [
           sources."nanoresource-promise-1.2.2"
@@ -5335,7 +5332,7 @@ let
       sources."pidtree-0.3.1"
       sources."pidusage-2.0.21"
       sources."pino-6.13.1"
-      (sources."pino-http-5.6.0" // {
+      (sources."pino-http-5.7.0" // {
         dependencies = [
           sources."pino-std-serializers-4.0.0"
         ];
