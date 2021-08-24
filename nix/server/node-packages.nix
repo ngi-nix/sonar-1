@@ -73,11 +73,14 @@ let
         sha512 = "1D8rrQyeFR2hK7zWBDfemdGJDHZaIEUdjrCtGQYVCbXkIOgn0U+wyUyTouN4w01ZMWkD72WNP+S40oBlA8pUNQ==";
       };
     };
-    "@arsonar/ui-../../packages/ui" = {
+    "@arsonar/ui-0.4.0" = {
       name = "_at_arsonar_slash_ui";
       packageName = "@arsonar/ui";
       version = "0.4.0";
-      src = ../../packages/ui;
+      src = fetchurl {
+        url = "https://registry.npmjs.org/@arsonar/ui/-/ui-0.4.0.tgz";
+        sha512 = "iC/WDvDuTuMDKBM4lCBTQ3EPeBzleij1KM3WwGI+CbUk7hiA913AOOjb+xENIJZVWlkmpWnP9sr6DxagHq4RmQ==";
+      };
     };
     "@corestore/networker-1.2.0" = {
       name = "_at_corestore_slash_networker";
@@ -4845,7 +4848,7 @@ let
           sources."through2-4.0.2"
         ];
       })
-      sources."@arsonar/ui-../../packages/ui"
+      sources."@arsonar/ui-0.4.0"
       (sources."@corestore/networker-1.2.0" // {
         dependencies = [
           sources."nanoresource-promise-1.2.2"

@@ -20,7 +20,7 @@
     "@arsonar/cli": "^0.4.0",
     "@arsonar/common": "^0.4.0",
     "@arsonar/core": "^0.4.0",
-    "@arsonar/ui": "file:../../packages/ui",
+    "@arsonar/ui": "^0.4.0",
     "async-exit-hook": "^2.0.1",
     "body-parser": "^1.19.0",
     "collect-stream": "^1.2.1",

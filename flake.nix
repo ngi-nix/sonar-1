@@ -126,7 +126,8 @@
 
             # update nix code for server
             pushd ./nix/server
-            yq '.dependencies."@arsonar/bots" = "file:../../packages/bots" | .dependencies."@arsonar/ui" = "file:../../packages/ui"' \
+            # yq '.dependencies."@arsonar/bots" = "file:../../packages/bots" | .dependencies."@arsonar/ui" = "file:../../packages/ui"' \
+            yq '.dependencies."@arsonar/bots" = "file:../../packages/bots"' \
               ../../packages/server/package.json \
               > package.json
             node2nix --input ./package.json
