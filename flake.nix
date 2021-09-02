@@ -66,6 +66,7 @@
             '';
 
             # replace sonar-tantivy source with patched source
+            # TODO: might want to use preRebuild hook to patch sources instead of this hack
             dependencies = lib.forEach old.dependencies (source:
               if source.name == "_at_arso-project_slash_sonar-tantivy" then
                 source // {
@@ -84,6 +85,13 @@
             buildInputs = old.buildInputs ++ (with pkgs; [
               nodePackages.node-gyp-build
             ]);
+
+            postInstall = ''
+              pushd $out/lib/node_modules/@arsonar/server/node_modules/@arsonar/ui/
+              node bin.js build
+              exit 1
+              popd
+            '';
         });
       };
     in
@@ -126,11 +134,11 @@
 
             # update nix code for server
             pushd ./nix/server
-            # yq '.dependencies."@arsonar/bots" = "file:../../packages/bots" | .dependencies."@arsonar/ui" = "file:../../packages/ui"' \
-            yq '.dependencies."@arsonar/bots" = "file:../../packages/bots"' \
+            # yq '.dependencies."@arsonar/bots" = "file:../../packages/bots"' \
+            yq '.dependencies."@arsonar/bots" = "file:../../packages/bots" | .dependencies."@arsonar/ui" = "file:../../packages/ui"' \
               ../../packages/server/package.json \
               > package.json
-            node2nix --input ./package.json
+            node2nix --input ./package.json --supplement-input ./supplement.json
             popd
 
             # # generate cargo lock for sonar-tantivy
